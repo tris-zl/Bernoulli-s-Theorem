@@ -42,7 +42,7 @@ class InputNumbers:
         @staticmethod
         def k():
             k = int(input("Type in the number of favorable outcomes (k ∈ ℕ): "))
-            if k.self < 0:
+            if k < 0:
                 print("Please note that k must be a natural number...")
                 exit()
             return k
