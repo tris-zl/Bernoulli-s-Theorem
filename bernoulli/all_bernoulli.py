@@ -5,27 +5,36 @@ from fractions import Fraction
 class Calculate:
 
     @staticmethod
-    def bernoulli_theorem(n, p, k):
+    def bernoulli_theorem(n, k, p):
         result = math.comb(n, k) * p ** k * (1 - p) ** (n - k)
-        print(f'{math.comb(n, k)} · {p ** k} · {(1 - p) ** (n - k)}')
-        return result
+        print(f'\nP(X) = (n over k) · p ^ k · (1 - p) ^ (n - k)')
+        print(f'P(X) = {math.comb(n, k)} · {p ** k} · {(1 - p) ** (n - k)} = {result} = {result * 100} %')
 
     @staticmethod
     def expectation(n, p):
         result = n * p
-        print(f'{n} · {p}')
-        return result
+        print(f'\nE(X) = n · p')
+        print(f'E(X) = {n} · {p} = {result}')
 
     @staticmethod
-    def cumulative_probability(n, k, p):
-        result = n * p * k
-        return result
+    def cumulative_probability(n, k, p, x):
+        if x == 1:
+            result = 0
+            for i in range(0, k + 1):
+                one_k = math.comb(n, i) * p ** i * (1 - p) ** (n - i)
+                result = result + one_k
+            print(f'\nP(x ≤ {k}) = {result} = {result * 100} %')
+        elif x == 2:
+            pass
+        elif x == 3:
+            pass
+        else:
+            print("invalid enter")
 
     @staticmethod
     def standard_deviation(n, p):
         result = math.sqrt(n * p * (1 - p))
-        print(f'σ(X) = √ {n} · {p} · {(1 - p)}')
-        return result
+        print(f'\nσ(X) = √ {n} · {p} · {(1 - p)} = {result}')
 
 
 class InputNumbers:
@@ -65,6 +74,11 @@ class InputNumbers:
                 exit()
             return p
 
+        @staticmethod
+        def x():
+            choose = int(input("Choose from 'x ≤ num' (1), 'x ≥ num' (2) or 'num ≤ x ≤ num' (3)"))
+            return choose
+
     except ValueError as value_err:
         print(value_err)
 
@@ -80,25 +94,27 @@ def which_operation():
             n = InputNumbers.n()
             k = InputNumbers.k()
             p = InputNumbers.p()
-            result = Calculate.bernoulli_theorem(n, k, p)
+            Calculate.bernoulli_theorem(n, k, p)
         elif operation == 2:
             n = InputNumbers.n()
             p = InputNumbers.p()
-            result = Calculate.expectation(n, p)
+            Calculate.expectation(n, p)
         elif operation == 3:
+            x = InputNumbers.x()
             n = InputNumbers.n()
             k = InputNumbers.k()
             p = InputNumbers.p()
-            result = Calculate.cumulative_probability(n, k, p)
-        else:
+            Calculate.cumulative_probability(n, k, p, x)
+        elif operation == 4:
             n = InputNumbers.n()
             p = InputNumbers.p()
-            result = Calculate.standard_deviation(n, p)
-
-        return result
+            Calculate.standard_deviation(n, p)
+        else:
+            print('invalid enter')
+            exit()
 
     except ValueError as value_err:
         print(value_err)
 
 
-print(which_operation())
+which_operation()
