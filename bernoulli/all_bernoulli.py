@@ -7,27 +7,32 @@ class Calculate:
     @staticmethod
     def bernoulli_theorem(n, k, p):
         result = math.comb(n, k) * p ** k * (1 - p) ** (n - k)
-        print(f'\nP(X) = (n over k) · p ^ k · (1 - p) ^ (n - k)')
-        print(f'P(X) = {math.comb(n, k)} · {p ** k} · {(1 - p) ** (n - k)} = {result} = {result * 100} %')
+        print(f'\nP(X) = {math.comb(n, k)} · {p ** k} · {(1 - p) ** (n - k)} = {result} = {result * 100} %')
 
     @staticmethod
     def expectation(n, p):
         result = n * p
-        print(f'\nE(X) = n · p')
-        print(f'E(X) = {n} · {p} = {result}')
+        print(f'\nE(X) = {n} · {p} = {result}')
 
     @staticmethod
     def cumulative_probability(n, k, p, x):
+        result = 0
         if x == 1:
-            result = 0
             for i in range(0, k + 1):
                 one_k = math.comb(n, i) * p ** i * (1 - p) ** (n - i)
                 result = result + one_k
-            print(f'\nP(x ≤ {k}) = {result} = {result * 100} %')
+            print(f'\nP(X ≤ {k}) = {result} = {result * 100} %')
         elif x == 2:
-            pass
+            for i in range(k, n + 1):
+                one_k = math.comb(n, i) * p ** i * (1 - p) ** (n - i)
+                result = result + one_k
+            print(f'\nP(X ≥ {k}) = {result} = {result * 100} %')
         elif x == 3:
-            pass
+            k2 = InputNumbers.k2()
+            for i in range(k, k2 + 1):
+                one_k = math.comb(n, i) * p ** i * (1 - p) ** (n - i)
+                result = result + one_k
+            print(f'\nP({k} ≤ X ≤ {k2}) = {result} = {result * 100} %')
         else:
             print("invalid enter")
 
@@ -57,9 +62,18 @@ class InputNumbers:
             return k
 
         @staticmethod
+        def k2():
+            k2 = int(input("Type in the number of favorable outcomes (Your second k number) (k ∈ ℕ): "))
+            if k2 < 0:
+                print("Please note that k must be a natural number...")
+                exit()
+            return k2
+
+        @staticmethod
         def p():
             choose = int(input("Do you want to write p as a fraction (1) or decimal number (2)? "))
 
+            p = 0
             if choose == 1:
                 numerator = int(input("Type in the numerator (numerator ∈ ℤ): "))
                 denominator = int(input("Type in the denominator (denominator ∈ ℤ)  "))
@@ -72,11 +86,12 @@ class InputNumbers:
             else:
                 print("Please give a legal response: ")
                 exit()
+
             return p
 
         @staticmethod
         def x():
-            choose = int(input("Choose from 'x ≤ num' (1), 'x ≥ num' (2) or 'num ≤ x ≤ num' (3)"))
+            choose = int(input("Choose from 'x ≤ k' (1), 'x ≥ k' (2) or 'k ≤ x ≤ k' (3)"))
             return choose
 
     except ValueError as value_err:
